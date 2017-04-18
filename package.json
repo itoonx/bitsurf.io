@@ -1,0 +1,37 @@
+{
+  "name": "bitsurf.io",
+  "version": "1.0.0",
+  "description": "The easiest way to receive and send cryptocurrency",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon ./index.js --watch",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itoonx/bitsurf.io.git"
+  },
+  "keywords": [
+    "Bitcoin",
+    "Etherium",
+    "Wallet",
+    "Service",
+    "Express",
+    "MongoDB"
+  ],
+  "author": "itoonx",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/itoonx/bitsurf.io/issues"
+  },
+  "homepage": "https://github.com/itoonx/bitsurf.io#readme",
+  "dependencies": {
+    "express": "^4.15.2",
+    "express-winston": "^2.3.0",
+    "http-status": "^1.0.1",
+    "mongoose": "^4.9.4",
+    "morgan": "^1.8.1",
+    "path": "^0.12.7",
+    "winston": "^2.3.1"
+  }
+}

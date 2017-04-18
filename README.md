@@ -11,12 +11,12 @@ If you wish to collaborate, check out [our issue list](https://github.com/itoonx
 - UI Monitor
 
 ## Conceptions of Process
-We have planing for building microservices about cryptocurrency like BTC, LTC, ETH 
-to make it for easily way this and save the time of you !!! 
+We have planing for building microservices about cryptocurrency like BTC, LTC, ETH
+to make it for easily way this and save the time of you !!!
 
 ## Documentation
 The documentation for the Bitsurf.io is coming soon
 
 ## License
-MIT 
+MIT
 
