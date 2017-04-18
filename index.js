@@ -24,6 +24,6 @@ app.listen(config.port, ()  => {
   console.info('☛ Bitsurf - The easiest way to send & receive cryptocurrency');
   console.log(`✔ Bitsurf has started on: ${config.port}`);
 
-  blockchains.bitcoinStatus();
+  // blockchains.bitcoinStatus();
 
 });
