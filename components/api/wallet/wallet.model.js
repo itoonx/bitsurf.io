@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
+const APIError = require('../../helpers/APIError');
 
 const WalletSchema = new mongoose.Schema({
   userIdentity: {
@@ -13,8 +14,7 @@ const WalletSchema = new mongoose.Schema({
   },
   passphrase: {
     type: String,
-    index: true,
-    unique: true
+    index: true
   },
   addressName: String,
   WIFKey: String,
@@ -42,9 +42,30 @@ const WalletSchema = new mongoose.Schema({
 WalletSchema.plugin(uniqueValidator);
 
 WalletSchema.statics = {
-  list: (start = 0, limit = 50) => {
-    console.log(`Start ${start} and limit ${limit}`);
-  }
+
+  getWalletById(id) {
+    return this.findById(id)
+      .exec()
+      .then((callback) => {
+        if (callback) {
+          return callback;
+        }
+      })
+      .catch(() => {
+        const err = new APIError('No such wallet exists!', httpStatus.NOT_FOUND);
+        return Promise.reject(err);
+      });
+  },
+
+  list({ skip = 0, limit = 50 } = {}) {
+    return this.find()
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .exec();
+  },
+  
+
 }
 
 module.exports = mongoose.model('Wallet', WalletSchema);

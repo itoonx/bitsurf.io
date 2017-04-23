@@ -28,11 +28,11 @@ mongoose.connection.on('error', () => {
 });
 
 // print mongoose logs in dev env
-// if (config.MONGOOSE_DEBUG) {
-//   mongoose.set('debug', (collectionName, method, query, doc) => {
-//     debug(`${collectionName}.${method}`, util.inspect(query, false, 20), doc);
-//   });
-// }
+if (config.MONGOOSE_DEBUG) {
+  mongoose.set('debug', (collectionName, method, query, doc) => {
+    // debug(`${collectionName}.${method}`, util.inspect(query, false, 20), doc);
+  });
+}
 
 app.listen(config.port, ()  => {
   console.info('☛ Bitsurf - The easiest way to send & receive cryptocurrency');
