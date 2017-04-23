@@ -27,6 +27,8 @@ const bitcoin = {
 
     const wallet = new WalletSchema({
       userIdentity: body.identity,
+      domain_key: body.domain_key,
+      passphrase: body.passphrase,
       type: Currency.BTC,
       addressName: 'My BTC Wallet',
       WIFKey: wifKey,
