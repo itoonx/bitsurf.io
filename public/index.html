@@ -55,7 +55,7 @@
             </ul>
           </li>
           <li>
-            <a href="//reddit.com/r/itsaunixsystem" target="_blank">Contact Us</a>
+            <a href="/" target="_blank">Contact Us</a>
           </li>
         </ul>
       </div>
@@ -64,93 +64,7 @@
 
   <div class="row">
     <div class="container-fluid">
-      <div class="col-xs-12 col-md-8">
-        <h2 translate=""><span class="ng-scope">Latest Transactions</span></h2>
-        <table class="table table-hover table-striped" style="table-layout: fixed;">
-          <thead>
-            <tr>
-              <th>Transaction ID</th>
-              <th class="text-right" translate=""><span class="ng-scope">Value Out</span></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr data-ng-show="!txs.length" class="ng-hide">
-              <td colspan="2" translate=""><span class="ng-scope">Waiting for transactions...</span></td>
-            </tr>
-            <!-- ngRepeat: tx in txs -->
-            <tr class="fader ng-scope ng-animate ng-enter ng-enter-active" data-ng-repeat="tx in txs" style="; transition-property: opacity;transition-duration: 1s;">
-              <td>
-                <a class="ellipsis ng-binding" href="tx/d629d0410788fa8266a90b76f9f9cd884ca090edfb73d2cd49d181501c9e96db">d629d0410788fa8266a90b76f9f9cd884ca090edfb73d2cd49d181501c9e96db</a>
-              </td>
-              <td class="text-right"><span class="ellipsis ng-binding">0.07280966 BTC</span></td>
-            </tr>
-            <!-- end ngRepeat: tx in txs -->
-            <tr class="fader ng-scope ng-animate ng-enter ng-enter-active" data-ng-repeat="tx in txs" style="; transition-property: opacity;transition-duration: 1s;">
-              <td>
-                <a class="ellipsis ng-binding" href="tx/bdae560f9bd454690adc0c61373f54a646f539878930979cec3c82c438c5cdfa">bdae560f9bd454690adc0c61373f54a646f539878930979cec3c82c438c5cdfa</a>
-              </td>
-              <td class="text-right"><span class="ellipsis ng-binding">0.32234369 BTC</span></td>
-            </tr>
-            <!-- end ngRepeat: tx in txs -->
-            <tr class="fader ng-scope ng-animate ng-enter ng-enter-active" data-ng-repeat="tx in txs" style="; transition-property: opacity;transition-duration: 1s;">
-              <td>
-                <a class="ellipsis ng-binding" href="tx/efed058a9c5f5b3a91b9a29a89b275033c43535cbf7562c37193559bff66081c">efed058a9c5f5b3a91b9a29a89b275033c43535cbf7562c37193559bff66081c</a>
-              </td>
-              <td class="text-right"><span class="ellipsis ng-binding">2.565623 BTC</span></td>
-            </tr>
-            <!-- end ngRepeat: tx in txs -->
-            <tr class="fader ng-scope ng-animate ng-enter ng-enter-active" data-ng-repeat="tx in txs" style="; transition-property: opacity;transition-duration: 1s;">
-              <td>
-                <a class="ellipsis ng-binding" href="tx/66e1919e419bb35120caa93114088e2052a0b76819814cf2e58889a4c093ff39">66e1919e419bb35120caa93114088e2052a0b76819814cf2e58889a4c093ff39</a>
-              </td>
-              <td class="text-right"><span class="ellipsis ng-binding">0.418051 BTC</span></td>
-            </tr>
-            <!-- end ngRepeat: tx in txs -->
-            <tr class="fader ng-scope ng-animate ng-enter ng-enter-active" data-ng-repeat="tx in txs" style="; transition-property: opacity;transition-duration: 1s;">
-              <td>
-                <a class="ellipsis ng-binding" href="tx/7b9a67e5c14ef64c3b3e1b91c91d23e24fe30c31e4760fffbc651e43ff672a6a">7b9a67e5c14ef64c3b3e1b91c91d23e24fe30c31e4760fffbc651e43ff672a6a</a>
-              </td>
-              <td class="text-right"><span class="ellipsis ng-binding">0.03709171 BTC</span></td>
-            </tr>
-            <!-- end ngRepeat: tx in txs -->
-            <tr class="fader ng-scope ng-animate ng-enter ng-enter-active" data-ng-repeat="tx in txs" style="; transition-property: opacity;transition-duration: 1s;">
-              <td>
-                <a class="ellipsis ng-binding" href="tx/c621ae6fa335bf6a6292a739b21cad39a7e4c5e11ccf25b4e3599720456513e1">c621ae6fa335bf6a6292a739b21cad39a7e4c5e11ccf25b4e3599720456513e1</a>
-              </td>
-              <td class="text-right"><span class="ellipsis ng-binding">0.49967897 BTC</span></td>
-            </tr>
-            <!-- end ngRepeat: tx in txs -->
-            <tr class="fader ng-scope" data-ng-repeat="tx in txs">
-              <td>
-                <a class="ellipsis ng-binding" href="tx/e91d5bfc2906c97cd0b5683d05fa7f3cd14a29edbdd7e57354087b38faa0bcc5">e91d5bfc2906c97cd0b5683d05fa7f3cd14a29edbdd7e57354087b38faa0bcc5</a>
-              </td>
-              <td class="text-right"><span class="ellipsis ng-binding">0.00948421 BTC</span></td>
-            </tr>
-            <!-- end ngRepeat: tx in txs -->
-            <tr class="fader ng-scope" data-ng-repeat="tx in txs">
-              <td>
-                <a class="ellipsis ng-binding" href="tx/120a14b231e46ca6c947fc9be533c75f969959b1ad72a76853c25c6b01dff072">120a14b231e46ca6c947fc9be533c75f969959b1ad72a76853c25c6b01dff072</a>
-              </td>
-              <td class="text-right"><span class="ellipsis ng-binding">0.36598554 BTC</span></td>
-            </tr>
-            <!-- end ngRepeat: tx in txs -->
-            <tr class="fader ng-scope" data-ng-repeat="tx in txs">
-              <td>
-                <a class="ellipsis ng-binding" href="tx/93b740ed6f943ecbbe96f8e7c5c9acd9bb4d760fa585a962d930e8f2b4baba6a">93b740ed6f943ecbbe96f8e7c5c9acd9bb4d760fa585a962d930e8f2b4baba6a</a>
-              </td>
-              <td class="text-right"><span class="ellipsis ng-binding">37.2112165 BTC</span></td>
-            </tr>
-            <!-- end ngRepeat: tx in txs -->
-            <tr class="fader ng-scope" data-ng-repeat="tx in txs">
-              <td>
-                <a class="ellipsis ng-binding" href="tx/db73ec300b4c3342666c8177bddd7771a908a51d219d0a218f70fa5c8905fd25">db73ec300b4c3342666c8177bddd7771a908a51d219d0a218f70fa5c8905fd25</a>
-              </td>
-              <td class="text-right"><span class="ellipsis ng-binding">0.6091 BTC</span></td>
-            </tr>
-            <!-- end ngRepeat: tx in txs -->
-          </tbody>
-        </table>
-      </div>
+      <p class="text-center">Under Development</p>
     </div>
   </div>
 

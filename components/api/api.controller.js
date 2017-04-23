@@ -1,4 +1,6 @@
 var httpStatus = require('http-status');
+var redis = require('redis');
+var rsclient = redis.createClient();
 var config = require('../../config/environments');
 
 const info = function(req, res, next) {
@@ -11,9 +13,9 @@ const info = function(req, res, next) {
 };
 
 const BTCStatus = function(req, res, next) {
-  res.status(httpStatus.OK).json({
-    network: 'live',
-    estimate_fee: 12.00
+  rsclient.get('bitcoinstatus', function(err, reply) {
+    res.status(httpStatus.OK).json( JSON.parse(reply) );
+    console.log(reply);
   });
 }
 

@@ -26,12 +26,24 @@
   },
   "homepage": "https://github.com/itoonx/bitsurf.io#readme",
   "dependencies": {
+    "bigi": "^1.4.2",
+    "bitcoinjs-lib": "^3.0.2",
+    "body-parser": "^1.17.1",
+    "bs58": "^4.0.0",
+    "ecurve": "^1.0.5",
     "express": "^4.15.2",
+    "express-joi": "^0.3.1",
+    "express-validation": "^1.0.2",
     "express-winston": "^2.3.0",
+    "fetch": "^1.1.0",
     "http-status": "^1.0.1",
+    "kue": "^0.11.5",
     "mongoose": "^4.9.4",
+    "mongoose-unique-validator": "^1.0.5",
     "morgan": "^1.8.1",
     "path": "^0.12.7",
+    "redis": "^2.7.1",
+    "redis-server": "^1.1.0",
     "winston": "^2.3.1"
   }
 }
