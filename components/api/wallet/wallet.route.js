@@ -1,6 +1,6 @@
 const express = require('express');
-const walletCtrl = require('./wallet.controller');
 const expressJoi = require('express-joi');
+const walletCtrl = require('./wallet.controller');
 const validatorSchema = require('../../validator/');
 
 const router = express.Router();
