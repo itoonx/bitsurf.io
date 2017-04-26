@@ -12,7 +12,7 @@ const bitcoin = {
         console.log(new Error(err));
       }
       rsclient.set('bitcoinstatus', body.toString());
-      console.log(`BTC : ${body.toString()} \n`);
+      console.log(`BTC : ${body.toString()}`);
     });
   }
 }
