@@ -1,4 +1,5 @@
 'use stict';
+const colors = require('colors');
 const mongoose = require('mongoose');
 const RedisServer = require('redis-server');
 const redis = require('redis');
@@ -39,19 +40,19 @@ if (config.MONGOOSE_DEBUG) {
 }
 
 app.listen(config.port, ()  => {
-  console.info('☛ Bitsurf - The easiest way to send & receive cryptocurrency');
-  console.log(`✔ Bitsurf has started on: ${config.port}`);
+  console.info('☛ Bitsurf - The easiest way to send & receive cryptocurrency'.green);
+  console.log(`✔ Bitsurf has started on: ${config.port}`.green);
 });
 
 // run worker $ job
 blockchains.bitcoin.sync();
-updateWallet.loadFromRedis();
+updateWallet.loadWalletToRedis();
 job.updateWalletJob();
 worker.syncWorker();
 
 // reload task wallet syncing 
 setInterval(() => {
-  updateWallet.loadFromRedis();
+  updateWallet.loadWalletToRedis();
 },2000);
 
 setInterval(() => {

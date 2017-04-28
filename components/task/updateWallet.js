@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const colors = require('colors');
 const debug = require('debug');
 const util = require('util');
 const RedisServer = require('redis-server');
@@ -10,7 +11,7 @@ const queue = kue.createQueue();
 const wallet = require('../api/wallet/wallet.model');
 
 module.exports = {
-  loadFromRedis: () => {
+  loadWalletToRedis: () => {
     wallet.find()
       .then((callback) => {
         const address = [];
@@ -18,10 +19,10 @@ module.exports = {
           address.push({ index: index, address: wallet.address, type: wallet.type });
         });
         rsclient.set('wallet', JSON.stringify(address));
-        console.log(`#### Run Jobs !!! Add Wallet to Redis Successful ####`);
+        console.log(`#### Run Jobs !!! Update Wallets... !!!`.yellow);
       })
       .catch((err) => {
-        console.log(`Error find wallet : ${err}`);
+        console.log(`Error find wallet : ${err}`.red);
       });
   }
 }
