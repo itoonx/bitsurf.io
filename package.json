@@ -28,6 +28,7 @@
   "dependencies": {
     "async": "^2.3.0",
     "bigi": "^1.4.2",
+    "bitcoin": "^3.0.1",
     "bitcoinjs-lib": "^3.0.2",
     "body-parser": "^1.17.1",
     "bs58": "^4.0.0",

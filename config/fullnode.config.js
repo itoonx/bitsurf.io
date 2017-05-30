@@ -1,5 +1,9 @@
 module.exports = {
   btc: {
-    live: 'http://35.154.27.8:3001/insight-api'
+    live: '192.168.1.6',
+    rpcuser: 'itoonx',
+    rpcpassword: 'BLOCKCHAIN_ONLY_WE_TRUTH',
+    rpcport: 8332,
+    rpctimeout: 3000
   }
 };

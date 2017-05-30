@@ -6,18 +6,41 @@ const async = require('async');
 const redis = require('redis');
 const rsclient = redis.createClient();
 
-const addressPerChunk = 2;
-const createAddrToChunks = (array, size) => {
-  array.reduce((arr, item, index) => {
-    const ix = Math.floor(index / addressPerChunk);
-    // console.log(ix);
-    //   // if( !arr[ix] ) {
-    //   //   arr[ix] = [];
-    //   // }
-    //   // arr[ix].push(item);
-    //   // return ar;
-  });
+var chunks = function(array, size) {
+  var results = [];
+  while (array.length) {
+    results.push(array.splice(0, size));
+  }
+  return results;
 };
+
+const createSyncBitcoinAddressJob = (wallets) => {
+  const asyncConcurrent = 1;
+  const start = new Date();
+  const AsyncQueue = async.queue((address, callback) => {
+
+    const job = queue.create('SyncTx', {
+      title: 'Syncing Wallet to Transactions !',
+      type: 'BTC',
+      wallets: wallets
+    }).save((err) => {
+        if( !err ) { 
+          console.log(`#### Create jobs SyncTx Job Id : ${job.id} successful`.yellow);
+          callback();
+        } else {
+          console.log(`#### Create jobs ${err}`.red);
+        }
+    });
+
+  }, asyncConcurrent);
+
+  AsyncQueue.push({ address: wallets.address });
+  AsyncQueue.drain = () => {
+    const end = new Date();
+    const elaspsed = end.getTime() - start.getTime();
+    console.log(`#### Process ${wallets.length} items finish : ${elaspsed} ms`.green);
+  }
+}
 
 const updateWalletJob = () => {
   // setInterval(() => {
@@ -55,52 +78,9 @@ const updateWalletJob = () => {
             break;
         }
       });
-      
-      console.log(BTCAddress);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      // const chunkWallets = chunks(wallets, wallets.length);
-      // console.log(chunkWallets);
-
-      // const asyncConcurrent = 5;
-      // const start = new Date();
-      // const AsyncQueue = async.queue((wallet, callback) => {
-      //   const job = queue.create('SyncTx', {
-      //     title: 'Syncing Wallet to Transactions !',
-      //     address: wallet.address,
-      //     type: wallet.type
-      //   }).delay(1000)
-      //     .save((err) => {
-      //       if( !err ) { 
-      //         console.log(`#### Create jobs SyncTx ${job.id} successful`.yellow);
-      //         callback();
-      //       } else {
-      //         console.log(`#### Create jobs ${err}`.red);
-      //       }
-      //   });
-      // }, asyncConcurrent);
-
-      // AsyncQueue.push(wallets);
-      // AsyncQueue.drain = () => {
-      //   const end = new Date();
-      //   const elaspsed = end.getTime() - start.getTime();
-      //   console.log(`#### Process ${wallets.length} items finish : ${elaspsed} ms`.green);
-      // }
+      createSyncBitcoinAddressJob(BTCAddress);
+      // Create Bitcoin Syncing to Transaction
     });
-
   // },1000);
 }
 

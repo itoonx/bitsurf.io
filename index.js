@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const RedisServer = require('redis-server');
 const redis = require('redis');
 const debug = require('debug');
+const bitcoinrpc = require('bitcoin');
 const util = require('util');
 const rsclient = redis.createClient();
 const config = require('./config/environments');
@@ -28,8 +29,13 @@ mongoose.Promise = Promise;
 
 // connect to mongodb
 mongoose.connect(config.db, { server: { socketOptions: { keepAlive: 3600 } } });
+
 mongoose.connection.on('error', () => {
   throw new Error(`unable to connect to database: ${config.db}`);
+})
+
+mongoose.connection.on('connected', () => {
+  console.log(`[ Database ] MongoDB Connected!!`.blue);
 });
 
 // print mongoose logs in dev env
@@ -40,12 +46,21 @@ if (config.MONGOOSE_DEBUG) {
 }
 
 app.listen(config.port, ()  => {
-  console.info('☛ Bitsurf - The easiest way to send & receive cryptocurrency'.green);
-  console.log(`✔ Bitsurf has started on: ${config.port}`.green);
+  console.info('☛ Bitsurf - The easiest way to send & receive cryptocurrency'.bold);
+  console.log(`✔ Bitsurf has started on: ${config.port}`.bold);
 });
 
 // run worker $ job
-blockchains.bitcoin.sync();
+blockchains.bitcoin.connect((connected) => {
+  connected.cmd('getbalance', '*', 6, function(err, balance, resHeaders) {
+    if (err) {
+      return console.log(err)
+    } else {
+      console.log(`[ RPC ] Bitcoin RPC Connected!!`.blue);
+    }
+  });
+})
+
 updateWallet.loadWalletToRedis();
 job.updateWalletJob();
 worker.syncWorker();
@@ -53,8 +68,8 @@ worker.syncWorker();
 // reload task wallet syncing 
 setInterval(() => {
   updateWallet.loadWalletToRedis();
-},2000);
+},5000);
 
 setInterval(() => {
-  blockchains.bitcoin.sync();
+  blockchains.bitcoin.getinfo();
 },10000)
