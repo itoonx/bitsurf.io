@@ -20,32 +20,31 @@ const syncWorker = () => {
 
     wallets.map((item, index) => {
       console.log(item);
-      // blockchains.bitcoin.
     });
 
     // fetch.fetchUrl(`${fullNodeConfig.btc.live}/addr/${address}`, (err, meta, response) => {
-      // const result = JSON.parse(response);
-      // Wallet.findOne({ address: address })
-      //   .then((callback) => {
-      //     if (callback.txApperances !== result.txApperances) {
-      //       // found new tx
-      //       // get last transaction
-      //       console.log(`### Found new transaction !!! | Address : ${callback.address} `.green);
-      //       callback.balance = result.balance;
-      //       callback.balanceSat = result.balanceSat;
-      //       callback.totalReceivedSat = result.totalReceivedSat;
-      //       callback.totalSent = result.totalSent;
-      //       callback.unconfirmedBalanceSat = result.unconfirmedBalanceSat;
-      //       callback.unconfirmedTxApperances = result.unconfirmedTxApperances;
-      //       callback.txApperances = result.txApperances;
-      //       // callback.save((saved) => {
-      //       //   console.log(`### Updated Wallet ${saved.address} finished`);
-      //       // })
-      //     }
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
+    //   const result = JSON.parse(response);
+    //   Wallet.findOne({ address: address })
+    //     .then((callback) => {
+    //       if (callback.txApperances !== result.txApperances) {
+    //         // found new tx
+    //         // get last transaction
+    //         console.log(`### Found new transaction !!! | Address : ${callback.address} `.green);
+    //         callback.balance = result.balance;
+    //         callback.balanceSat = result.balanceSat;
+    //         callback.totalReceivedSat = result.totalReceivedSat;
+    //         callback.totalSent = result.totalSent;
+    //         callback.unconfirmedBalanceSat = result.unconfirmedBalanceSat;
+    //         callback.unconfirmedTxApperances = result.unconfirmedTxApperances;
+    //         callback.txApperances = result.txApperances;
+    //         // callback.save((saved) => {
+    //         //   console.log(`### Updated Wallet ${saved.address} finished`);
+    //         // })
+    //       }
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
     // });
     done();
   }

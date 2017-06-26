@@ -1,6 +1,6 @@
 module.exports = {
   btc: {
-    live: '192.168.1.6',
+    live: '27.254.47.218',
     rpcuser: 'itoonx',
     rpcpassword: 'BLOCKCHAIN_ONLY_WE_TRUTH',
     rpcport: 8332,
