@@ -11,6 +11,7 @@ const queue = kue.createQueue();
 const wallet = require('../api/wallet/wallet.model');
 
 module.exports = {
+
   loadWalletToRedis: () => {
     wallet.find()
       .then((callback) => {
@@ -19,10 +20,11 @@ module.exports = {
           address.push({ index: index, address: wallet.address, type: wallet.type });
         });
         rsclient.set('wallet', JSON.stringify(address));
-        console.log(`#### Run Jobs !!! Update Wallets... !!!`.yellow);
+        console.log(`#### Loaded all wallet from redis`.yellow);
       })
       .catch((err) => {
         console.log(`Error find wallet : ${err}`.red);
       });
   }
+
 }

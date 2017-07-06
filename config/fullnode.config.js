@@ -1,9 +1,9 @@
 module.exports = {
   btc: {
     live: '27.254.47.218',
-    rpcuser: 'itoonx',
-    rpcpassword: 'BLOCKCHAIN_ONLY_WE_TRUTH',
+    rpcuser: 'blockchain_only_we_trust',
+    rpcpassword: 'p@ssw0rd',
     rpcport: 8332,
-    rpctimeout: 3000
+    rpctimeout: 6000
   }
 };

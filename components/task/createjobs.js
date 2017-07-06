@@ -14,27 +14,26 @@ var chunks = function(array, size) {
   return results;
 };
 
-const createSyncBitcoinAddressJob = (wallets) => {
+const createSync = (wallets) => {
   const asyncConcurrent = 1;
   const start = new Date();
-  const AsyncQueue = async.queue((address, callback) => {
-
+  
+  const AsyncQueue = async.queue((walletsObject, callback) => {
     const job = queue.create('SyncTx', {
-      title: 'Syncing Wallet to Transactions !',
-      type: 'BTC',
-      wallets: wallets
-    }).save((err) => {
-        if( !err ) { 
-          console.log(`#### Create jobs SyncTx Job Id : ${job.id} successful`.yellow);
-          callback();
-        } else {
-          console.log(`#### Create jobs ${err}`.red);
-        }
-    });
-
+        title: 'Syncing wallet to transactions !',
+        type: wallets.type,
+        wallets: walletsObject
+      }).save((err) => {
+          if( !err ) { 
+            console.log(`#### Create jobs SyncTx Job Id : ${job.id} successful`.yellow);
+            callback();
+          } else {
+            console.log(`#### Create jobs ${err}`.red);
+          }
+      });
   }, asyncConcurrent);
 
-  AsyncQueue.push({ address: wallets.address });
+  AsyncQueue.push({ walletsObject: wallets });
   AsyncQueue.drain = () => {
     const end = new Date();
     const elaspsed = end.getTime() - start.getTime();
@@ -42,9 +41,7 @@ const createSyncBitcoinAddressJob = (wallets) => {
   }
 }
 
-const updateWalletJob = () => {
-  // setInterval(() => {
-
+const createWalletSyncingJob = () => {
     const wallets = [];
     rsclient.get("wallet", (err, callback) => {
       if( !err ) {
@@ -65,25 +62,34 @@ const updateWalletJob = () => {
       wallets.map((wallet, index) => {
         switch (wallet.type) {
           case 2: 
-            BTCAddress.push(wallet.address);
+            BTCAddress.push(wallet);
             break;
           case 3: 
-            LTCAddress.push(wallet.address);
+            LTCAddress.push(wallet);
             break
           case 4: 
-            ETHAddress.push(wallet.address);
+            ETHAddress.push(wallet);
             break
           default:
             console.log('Not Available Coin');
             break;
         }
       });
-      createSyncBitcoinAddressJob(BTCAddress);
-      // Create Bitcoin Syncing to Transaction
+
+      if( BTCAddress.length != 0 ) {
+        createSync(BTCAddress);
+      }
+
+      if(LTCAddress.length != 0) {
+        createSync(LTCAddress);
+      }
+
+      if( ETHAddress.length != 0) {
+        createSync(ETHAddress);
+      }
     });
-  // },1000);
 }
 
 module.exports = {
-  updateWalletJob
+  createWalletSyncingJob
 }

@@ -20,43 +20,49 @@ function getBitcoinRPCConnection (connection) {
 const bitcoin = {
   connect: (callback) => {
     getBitcoinRPCConnection((connected) => {
-      callback(connected);
+      callback(null, connected);
     })
   },
 
-   getinfo: () => {
+  getinfo: () => {
     getBitcoinRPCConnection((connected) => {
       connected.cmd('getinfo', (err, info) => {
-        if (err) return console.log(err);
+        if (err) return callback(err, null);
         const infoJSON = JSON.stringify(info);
         rsclient.set('bitcoinstatus', infoJSON.toString());
-        console.log(`✔ --> Bitcoin Info`.bold);
-        console.log(`${infoJSON.toString()}`);
       })
     })
   },
 
   getrawtransaction: (txid, callback) => {
     getBitcoinRPCConnection((connected) => {
-      connected.cmd('getrawtransaction', txid, (err, rawtx) => {
-        if (err) return console.log(err);
-        const rawtransaction = JSON.stringify(rawtx);
-        callback(rawtransaction);
+      connected.cmd('getrawtransaction', txid, (err, response) => {
+        if (err) return callback(err, null);
+        const getrawtransaction = JSON.stringify(response);
+        callback(null, getrawtransaction);
       })
     })
   },
 
-  decoderawtransaction: (rawtx, callback) => {
+  decoderawtransaction: (hex, callback) => {
     getBitcoinRPCConnection((connected) => {
-      connected.cmd('getrawtransaction', txid, (err, rawtx) => {
-        if (err) return console.log(err);
-        const rawtransaction = JSON.stringify(rawtx);
-        callback(rawtransaction);
+      connected.cmd('decoderawtransaction', hex, (err, response) => {
+        if (err) return callback(err, null);
+        const decoderawtransaction = JSON.stringify(response);
+        callback(null, decoderawtransaction);
       })
     }); 
   },
 
-  
+  searchrawtransactions: (address, callback) => {
+    getBitcoinRPCConnection((connected) => {
+      connected.cmd('searchrawtransactions', address, (err, response) => {
+        if (err) return callback(err, null);
+        const searchrawtransactions = JSON.stringify(response);
+        callback(null, searchrawtransactions);
+      })
+    }); 
+  },
 
 }
 
