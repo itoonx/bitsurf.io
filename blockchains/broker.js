@@ -24,7 +24,6 @@ const bitcoin = {
       connected.cmd('getinfo', (err, info) => {
         if (err) return callback(err, null)
         let infoJSON = JSON.stringify(info)
-        rsclient.set('bitcoinstatus', infoJSON.toString())
       })
     })
   },
