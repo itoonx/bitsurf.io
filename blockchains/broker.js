@@ -8,8 +8,8 @@ function getBitcoinRPCConnection (connection) {
     pass: fullnode.btc.rpcpassword,
     port: fullnode.btc.rpcport,
     timeout: fullnode.btc.rpctimeout
-  });
-  connection(client);
+  })
+  connection(client)
 }
 
 const bitcoin = {
@@ -23,7 +23,7 @@ const bitcoin = {
     getBitcoinRPCConnection((connected) => {
       connected.cmd('getinfo', (err, info) => {
         if (err) return callback(err, null)
-        const infoJSON = JSON.stringify(info)
+        let infoJSON = JSON.stringify(info)
         rsclient.set('bitcoinstatus', infoJSON.toString())
       })
     })
@@ -33,7 +33,7 @@ const bitcoin = {
     getBitcoinRPCConnection((connected) => {
       connected.cmd('getrawtransaction', txid, (err, response) => {
         if (err) return callback(err, null)
-        const getrawtransaction = JSON.stringify(response)
+        let getrawtransaction = JSON.stringify(response)
         callback(null, getrawtransaction)
       })
     })
@@ -43,7 +43,7 @@ const bitcoin = {
     getBitcoinRPCConnection((connected) => {
       connected.cmd('decoderawtransaction', hex, (err, response) => {
         if (err) return callback(err, null)
-        const decoderawtransaction = JSON.stringify(response)
+        let decoderawtransaction = JSON.stringify(response)
         callback(null, decoderawtransaction)
       })
     })
@@ -53,7 +53,7 @@ const bitcoin = {
     getBitcoinRPCConnection((connected) => {
       connected.cmd('searchrawtransactions', address, (err, response) => {
         if (err) return callback(err, null)
-        const searchrawtransactions = JSON.stringify(response)
+        let searchrawtransactions = JSON.stringify(response)
         callback(null, searchrawtransactions)
       })
     })
@@ -63,10 +63,22 @@ const bitcoin = {
     getBitcoinRPCConnection((connected) => {
       connected.cmd('getblock', blockhash, (err, response) => {
         if (err) return callback(err, null)
+        let block = JSON.stringify(response)
+        callback(null, block)
+      })
+    })
+  },
+
+  getrawmempool: () => {
+    getBitcoinRPCConnection((connected) => {
+      connected.cmd('getrawmempool', false, (err, response) => {
+        if (err) return callback(err, null)
+        let rawmempool = JSON.stringify(response)
+        callback(null, rawmempool)
       })
     })
   }
 
 }
 
-module.exports = { bitcoin };
+module.exports = { bitcoin }
