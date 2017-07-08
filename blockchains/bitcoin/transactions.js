@@ -4,80 +4,133 @@ const getTransactionByTransactionID = (txid) => {
   var rawtransactions = null
   var decodedtransactions = null
   var inputobjects = null
+  var outputobjects = null
   var prev_out = null
+  var sequenceobjects = null
+  var vin_sz = 0
+  var vout_sz = 0
   var serialized = null
-  var total_sent = 0
-  var total_received = 0
   return new Promise((resolve, reject) => {
     getRawTransaction(txid).then((res) => { rawtransactions = res })
       .then(() => decodeRawTransaction(rawtransactions).then((res) => { decodedtransactions = res }))
       .then(() => getInputTransactions(decodedtransactions).then((res) => { inputobjects = res }))
-      .then(() => getPrevOutputFromInputTx(inputobjects).then((res) => { prev_out = res }))
-      // .then(() => serializeTransactions(decodedtransactions).then((res) => { serialized = res }))
-      // .then(() => getOutputBalance(decodedtransactions).then((res) => { serialized = res }))
+      .then(() => getOutputTransactions(decodedtransactions).then((res) => { outputobjects = res }))
+      .then(() => getSequenceNumberFromInputTx(inputobjects).then((res) => { sequenceobjects = res }))
+      .then(() => getPrevOutputFromInputTx(inputobjects, sequenceobjects).then((res) => { prev_out = res }))
+      .then(() => getInputSizeFromInputObjects(inputobjects).then((res) => { vin_sz = res }))
+      .then(() => getOutputSizeFromOuputObjects(outputobjects).then((res) => { vout_sz = res }))
+      .then(() => serializeTransactions(decodedtransactions, prev_out, outputobjects).then((res) => { serialized = res }))
       .then(() => {
-        // console.log(prevout)
-        resolve(prev_out)
+        resolve(serialized)
+      })
+      .catch((error) => {
+        resolve({ error: true, message: error })
       })
   })
 }
 
-
-const startProcess = (prev_out) => {
+const getOutputSizeFromOuputObjects = (outputobjects) => {
+  let vin_sz = 0
   return new Promise((resolve, reject) => {
-    Promise.all(prev_out).then((val) => {
-      resolve(val)
+    outputobjects.map((outx) => {
+      vin_sz += outx.n
+    })
+    resolve(vin_sz)
+  })
+}
+
+const getInputSizeFromInputObjects = (inputobjects) => {
+  let vout_sz = 0
+  return new Promise((resolve, reject) => {
+    inputobjects.map((inptx) => {
+      vout_sz += inptx.vout
+    })
+    resolve(vout_sz)
+  })
+}
+
+const getSentBalanceFromOutput = (inputobjects) => {
+  var sentbalance = 0
+  return new Promise((resolve, reject) => {
+    inputobjects.map((inptx) => {
+      console.log(inptx)
     })
   })
 }
 
-const getPrevMapped = (vout_tx, vout_number, txid) => {
-  var prev_out = []
+const getReceivedBalanceFromPrev = (prevoutobject) => {
+  var receivedbalance = 0
+  return new Promise((resolve, reject) => {
+    prevoutobject.map((prevtx) => {
+      receivedbalance += prevtx.prev_out.value
+    })
+    resolve(receivedbalance)
+  });
+}
+
+const getSequenceNumberFromInputTx = (inputobjects) => {
+  let sequence_number = []
+  return new Promise((resolve, reject) => {
+    inputobjects.map((inptx) => {
+      sequence_number.push({ vout: inptx.vout, sequence: inptx.sequence})
+    })
+    resolve(sequence_number)
+  })
+}
+
+const getPrevMapped = (vout_tx, sequenceobjects, vout_number, txid) => {
+  var prevoutx = []
   return new Promise((resolve, reject) => {
     vout_tx.map((outx) => {
       if ( vout_number == outx.n ) {
-        prev_out.push({ txid, prev_out: outx })
+        sequenceobjects.map((seqn) => {
+          if ( seqn.vout == outx.n ) {
+            prevoutx.push({ sequence: seqn.sequence, prev_out: outx })
+          }
+        })
       }
     })
-    resolve(prev_out)
+    resolve(prevoutx)
   })
 }
 
-const getPrevOutputFromInputTx = (inputobjects) => {
+const getPrevOutputFromInputTx = (inputobjects, sequenceobjects) => {
   var rawtransactions = null
   var decodedtransactions = null
   var outx = null
   return new Promise((resolve, reject) => {
+    var prevoutchunk = []
     inputobjects.map((tx) => {
       var vout_number = tx.vout
       getRawTransaction(tx.txid).then((res) => { rawtransactions = res })
         .then(() => decodeRawTransaction(rawtransactions).then((res) => { decodedtransactions = res }))
         .then(() => getOutputTransactions(decodedtransactions).then((res) => { outx = res }))
-        .then(() => getPrevMapped(outx, vout_number, tx.txid).then((res) => {
-          startProcess(res).then((prevobject) => {
-            resolve(prevobject)
-          })
+        .then(() => getPrevMapped(outx, sequenceobjects, vout_number, tx.txid).then((res) => {
+          prevoutchunk.push(res[0])
+          if ( inputobjects.length === prevoutchunk.length) {
+            resolve(prevoutchunk)
+          }
         }))
     })
   })
 }
 
-const serializeTransactions = (transactionobject) => {
-  var txheader = []
-  transactionobject.map((tx, index) => {
-    txheader.push({
-      version: tx.version,
-      hash: tx.hash,
-      confirmations: tx.confirmations,
-      lock_time: tx.locktime,
-      time: tx.time,
-      block_time: tx.blocktime,
-      size: tx.size,
-      vsize: tx.vsize,
-      blockhash: tx.blockhash
-    })
+const serializeTransactions = (decodedtransactions, inputs, outputs) => {
+  return new Promise((resolve, reject) => {
+    var tx = {
+      version: decodedtransactions.version,
+      hash: decodedtransactions.hash,
+      confirmations: decodedtransactions.confirmations,
+      lock_time: decodedtransactions.locktime,
+      time: decodedtransactions.time,
+      block_time: decodedtransactions.blocktime,
+      size: decodedtransactions.size,
+      blockhash: decodedtransactions.blockhash,
+      inputs: inputs,
+      outputs: outputs
+    }
+    resolve(tx)
   })
-  return Promise.resolve(txheader)
 }
 
 const getOutputBalance = (transactionobject) => {
