@@ -1,31 +1,25 @@
 import blockchains from '../broker'
 
-const getTransactionByTransactionID = (txid) => {
-  var rawtransactions = null
-  var decodedtransactions = null
-  var inputobjects = null
-  var outputobjects = null
-  var prev_out = null
-  var sequenceobjects = null
-  var vin_sz = 0
-  var vout_sz = 0
-  var serialized = null
+const getTransactionByTransactionID = async (txid) => {
   return new Promise((resolve, reject) => {
-    getRawTransaction(txid).then((res) => { rawtransactions = res })
-      .then(() => decodeRawTransaction(rawtransactions).then((res) => { decodedtransactions = res }))
-      .then(() => getInputTransactions(decodedtransactions).then((res) => { inputobjects = res }))
-      .then(() => getOutputTransactions(decodedtransactions).then((res) => { outputobjects = res }))
-      .then(() => getSequenceNumberFromInputTx(inputobjects).then((res) => { sequenceobjects = res }))
-      .then(() => getPrevOutputFromInputTx(inputobjects, sequenceobjects).then((res) => { prev_out = res }))
-      .then(() => getInputSizeFromInputObjects(inputobjects).then((res) => { vin_sz = res }))
-      .then(() => getOutputSizeFromOuputObjects(outputobjects).then((res) => { vout_sz = res }))
-      .then(() => serializeTransactions(decodedtransactions, prev_out, outputobjects).then((res) => { serialized = res }))
-      .then(() => {
-        resolve(serialized)
-      })
-      .catch((error) => {
-        resolve({ error: true, message: error })
-      })
+    processTransactions(txid).then((tx) => {
+      resolve(tx)
+    })
+  });
+}
+
+const processTransactions = async (txid) => {
+  var rawtx = await getRawTransaction(txid)
+  var decoderawtx = await decodeRawTransaction(rawtx)
+  var inputs = await getInputTransactions(decoderawtx)
+  var outputs = await getOutputTransactions(decoderawtx)
+  var sequence_n = await getSequenceNumberFromInputTx(inputs)
+  var prev_out = await getPrevOutputFromInputTx(inputs, sequence_n)
+  var vin_sz = await getInputSizeFromInputObjects(inputs)
+  var vout_sz = await getOutputSizeFromOuputObjects(outputs)
+  var serialized = await serializeTransactions(decoderawtx, prev_out, outputs)
+  return new Promise((resolve, reject) => {
+    resolve(serialized)
   })
 }
 
@@ -115,24 +109,6 @@ const getPrevOutputFromInputTx = (inputobjects, sequenceobjects) => {
   })
 }
 
-const serializeTransactions = (decodedtransactions, inputs, outputs) => {
-  return new Promise((resolve, reject) => {
-    var tx = {
-      version: decodedtransactions.version,
-      hash: decodedtransactions.hash,
-      confirmations: decodedtransactions.confirmations,
-      lock_time: decodedtransactions.locktime,
-      time: decodedtransactions.time,
-      block_time: decodedtransactions.blocktime,
-      size: decodedtransactions.size,
-      blockhash: decodedtransactions.blockhash,
-      inputs: inputs,
-      outputs: outputs
-    }
-    resolve(tx)
-  })
-}
-
 const getOutputBalance = (transactionobject) => {
   return new Promise((resolve) => {
     let OutputBalance = 0;
@@ -165,6 +141,25 @@ const getOutputTransactions = (transactionobject) => {
   })
 }
 
+const serializeTransactions = (decodedtransactions, inputs, outputs) => {
+  console.log(decodedtransactions)
+  return new Promise((resolve, reject) => {
+    var tx = {
+      version: decodedtransactions.version,
+      hash: decodedtransactions.hash,
+      confirmations: decodedtransactions.confirmations,
+      lock_time: decodedtransactions.locktime,
+      time: decodedtransactions.time,
+      block_time: decodedtransactions.blocktime,
+      size: decodedtransactions.size,
+      blockhash: decodedtransactions.blockhash,
+      inputs: inputs,
+      outputs: outputs
+    }
+    resolve(tx)
+  })
+}
+
 const searchRawTransaction = (addr) => {
   return new Promise((resolve, reject) => {
     blockchains.bitcoin.searchrawtransactions(addr, (err, response) => {
@@ -192,4 +187,18 @@ const decodeRawTransaction = (txid) => {
   })
 }
 
-module.exports = { getTransactionByTransactionID }
+module.exports = { 
+  getTransactionByTransactionID,
+  getOutputSizeFromOuputObjects,
+  getInputSizeFromInputObjects,
+  getSentBalanceFromOutput,
+  getReceivedBalanceFromPrev,
+  getSequenceNumberFromInputTx,
+  getPrevOutputFromInputTx,
+  getOutputBalance,
+  getInputTransactions,
+  getOutputTransactions,
+  searchRawTransaction ,
+  getRawTransaction,
+  decodeRawTransaction
+}

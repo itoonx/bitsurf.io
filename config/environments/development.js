@@ -2,6 +2,6 @@ module.exports = {
   env: 'development',
   MONGOOSE_DEBUG: true,
   serverSecret: 'your key 123',
-  db: 'mongodb://localhost:27017/testbitsurf',
-  port: 8090
+  db: 'mongodb://139.59.105.79:27017/testbitsurf',
+  port: 8333
 };
