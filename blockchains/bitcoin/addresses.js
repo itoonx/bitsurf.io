@@ -31,33 +31,32 @@ const getTransactionsFromAddress = async (rawaddr) => {
   })
 }
 
-const scriptSig = () => {
-
-}
-
-const ripemd160 = (rawaddr) => {
+const filterhash160 = (rawaddr, addr) => {
   return new Promise((resolve, reject) => {
     rawaddr.map((tx, index) => {
-      // tx.vout
-      // console.log(tx.vout)
       tx.vout.map((vout) => {
-        // if ( scriptSig)
-        console.log(vout.scriptPubKey);
+        if (vout.scriptPubKey.addresses === addr) {
+
+          let scriptSig = vout.scriptPubKey.asm
+          let hash160 = scriptSig.split(" ")
+
+          resolve(hash160)
+        }
       })
     })
   })
 }
 
-const getReceiveBalance = (rawaddr) => {
-  var satoshi_balance = 0
-  return new Promise((resolve, reject) => {
-    rawaddr.map((tx, index) => {
-      // tx.vout
-      // console.log(tx.vout)
+// const getReceiveBalance = (rawaddr) => {
+//   var satoshi_balance = 0
+//   return new Promise((resolve, reject) => {
+//     rawaddr.map((tx, index) => {
+//       // tx.vout
+//       // console.log(tx.vout)
 
-    })
-  })
-}
+//     })
+//   })
+// }
 
 const getSentBalance = () => {
 
@@ -70,12 +69,12 @@ const getFinalBalance = () => {
 
 const processAddress = async (addr) => {
   var rawaddr = await Transactions.searchRawTransaction(addr)
-  var txs = await getTransactionsFromAddress(rawaddr)
+  // var txs = await getTransactionsFromAddress(rawaddr)
   // var receive = await getReceiveBalance(rawaddr)
-  var hash160 = await ripemd160(rawaddr)
+  // var hash160 = await filterhash160(rawaddr, addr)
 
   return new Promise((resolve, reject) => {
-    resolve(hash160)
+    resolve(rawaddr)
   })
 }
 

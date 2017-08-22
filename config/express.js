@@ -10,7 +10,7 @@ const winstonInstance = require('./winston');
 const apiRoutes = require('../components/api/api.route');
 const config = require('../config/environments');
 const APIError = require('../components/helpers/APIError');
-require('console-stamp')(console, ' HH:MM:ss.l ');
+// require('console-stamp')(console, ' HH:MM:ss.l ');
 
 const app = express();
 

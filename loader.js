@@ -70,9 +70,9 @@ app.listen(config.port, ()  => {
     if (err) console.log(err)
 
     console.log(' ------------------------------------------------------------------------- ')
-    console.info("\n" + data)
-    console.info('☛ Blockparser - The easiest way to send & receive cryptocurrency'.bold)
-    console.info(`✔ Blockparser has started on: ${config.port}`.bold)
+    console.info("\n" + data.green)
+    console.info('☛ Blockparser - The easiest way to send & receive cryptocurrency'.green)
+    console.info(`✔ Blockparser has started on: ${config.port}`.green)
   })
   
 });

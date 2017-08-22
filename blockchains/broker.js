@@ -58,6 +58,16 @@ const bitcoin = {
     })
   },
 
+  gettxout : (txid, vout, include_unconfirmed, callback) => {
+    getBitcoinRPCConnection((connected) => {
+      connected.cmd('gettxout', txid, vout, include_unconfirmed, (err, response) => {
+        if (err) return callback(err, null)
+        let txout = JSON.stringify(response)
+        callback(null, txout)
+      })
+    })
+  },
+
   getblock: (blockhash) => {
     getBitcoinRPCConnection((connected) => {
       connected.cmd('getblock', blockhash, (err, response) => {
