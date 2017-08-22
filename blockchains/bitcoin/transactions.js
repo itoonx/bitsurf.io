@@ -12,10 +12,10 @@ const processTransactions = async(txid) => {
     console.log('Searching txid = ', txid)
     var rawtx = await getRawTransaction(txid)
     var decoderawtx = await decodeRawTransaction(rawtx)
-    var inputs = await getInputTransactions(decoderawtx)
-    var outputs = await getOutputTransactions(decoderawtx)
-    var sequence_n_obj = await getSequenceNumberFromInputTx(inputs)
-    var prev_out = await getPrevOutputFromInputTx(inputs, sequence_n_obj)
+        // var inputs = await getInputTransactions(decoderawtx)
+        // var outputs = await getOutputTransactions(decoderawtx)
+        // var sequence_n_obj = await getSequenceNumberFromInputTx(inputs)
+        // var prev_out = await getPrevOutputFromInputTx(inputs, sequence_n_obj)
         // var vin_sz = await getInputSizeFromInputObjects(inputs)
         // var vout_sz = await getOutputSizeFromOuputObjects(outputs)
         // var serialized = await serializeTransactions(decoderawtx, prev_out, outputs)
@@ -78,7 +78,7 @@ const getPrevMapped = (vout_tx, sequence_n_obj, vout_number) => {
         })
 
 
-        // resolve(prevoutx)
+        resolve(prev_outx)
     })
 }
 
